@@ -1,6 +1,7 @@
-import type { Money } from "../../../../domain/finance/interfaces/money.interface";
-import { Wallet } from "../../../../ui/icons/wallet.icon";
-import { formatMoney } from "../../../../utils/formatMoney";
+import type { Money } from "@/domain/interfaces/finance/money";
+import { Wallet } from "@/ui/icons/wallet.icon";
+import { formatMoney } from "@/utils/formatMoney";
+
 
 interface OverviewBalanceProps {
   balance: Money;
@@ -8,8 +9,8 @@ interface OverviewBalanceProps {
 
 export function OverviewBalance({ balance }: OverviewBalanceProps) {
   return (
-    <div className="relative overflow-hidden rounded-3xl flex-1 bg-gradient-to-br from-blue-800 to-blue-500 p-8 text-white">
-      <div className="absolute inset-0 bg-black/10"></div>
+    <div className="relative overflow-hidden rounded-3xl flex-1 bg-gradient-to-br from-black to-gray-800 p-8 text-white">
+      <div className="absolute inset-0 bg-black/1"></div>
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
