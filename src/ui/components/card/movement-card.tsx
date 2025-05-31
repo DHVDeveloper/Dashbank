@@ -20,7 +20,7 @@ export function MovementCard({
   const iconRotation = isExpense ? "rotate-90" : "";
 
   return (
-    <div className="bg-primary-bg-color transition-colors text-primary-text-color/60 shadow  rounded-2xl w-full h-full px-3 py-2 items-center">
+    <div className="bg-secondary-bg-color transition-colors text-primary-text-color/60 shadow  rounded-2xl w-full h-full px-3 py-2 items-center">
       <div className="flex justify-start w-full h-full items-center gap-5">
         <ArrowUpRight
           className={`h-[45px] w-[45px] ${iconColor} dark:bg-[#2c2c2c] p-2 rounded-lg transform ${iconRotation}`}
