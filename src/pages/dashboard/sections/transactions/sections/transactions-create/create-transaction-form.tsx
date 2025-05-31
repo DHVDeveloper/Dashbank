@@ -1,3 +1,7 @@
+import { useAlertContext } from "@/context/alert/alert.context"
+import { Currency } from "@/domain/interfaces/finance/money"
+import type { Transaction, TransactionTypes } from "@/domain/interfaces/transaction/transaction"
+import { transactionService } from "@/services/transaction-service"
 import { SelectionCard } from "@/ui/components/card/selection-card"
 import { Button } from "@/ui/components/form/button"
 import { Input } from "@/ui/components/form/input"
@@ -12,15 +16,39 @@ export interface TransactionData {
   date: string
 }
 
-export function CreateTransactionForm() {
+interface CreateTransactionFormProps {
+  onClose: () => void
+}
+
+export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
   const [amount, setAmount] = useState("")
-  const [type, setType] = useState<"deposit" | "withdrawal">("deposit")
+  const [type, setType] = useState<TransactionTypes>("deposit")
+  const [isLoading, setIsLoading] = useState(false)
   const [description, setDescription] = useState("")
   const [date, setDate] = useState(getCurrentDateToForm())
+  const {showAlert} = useAlertContext()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-      
+    setIsLoading(true)
+    const newTransaction:Transaction = {
+      transactionType: type,
+      money: {
+        amount: Number(amount),
+        currency: Currency.EUR 
+      },
+      description: description,
+      date: new Date(date)
+    }
+
+    const response = await transactionService.newTransaction(newTransaction)
+    setIsLoading(false)
+    if(!response.success) {
+      showAlert({message: response.error ?? 'Ha habido un error', type: 'danger'})
+      return
+    }
+    showAlert({message: 'Se ha hecho la transacción correctamente', type: 'success'})
+    onClose()
   }
 
   const handleAmountChange = (newAmount:string) => {
@@ -92,7 +120,7 @@ export function CreateTransactionForm() {
       </div>
 
       <div className="pt-4 text-end">
-        <Button type="submit" className="w-full dark:bg-[]">
+        <Button disabled={isLoading} type="submit" className="w-full">
           Save Transaction
         </Button>
       </div>
