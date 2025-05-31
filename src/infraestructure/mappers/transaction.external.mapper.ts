@@ -1,9 +1,9 @@
-import type { NewTransaction } from "@/domain/interfaces/transaction/transaction";
-import type { TransactionRequest } from "../interfaces/transaction.external";
-import { Currency } from "@/domain/interfaces/finance/money";
+import type { NewTransaction } from "@/domain/interfaces/transaction";
+import type { NewTransactionRequest } from "../interfaces/transaction.external";
+import { Currency } from "@/domain/interfaces/money";
 import { CurrencyRepository } from "../interfaces/money.external";
 
-export function maptransactionToTransactionRequest(transaction:NewTransaction): TransactionRequest {
+export function mapNewtransactionToNewTransactionRequest(transaction:NewTransaction): NewTransactionRequest {
     return {
         date: transaction.date,
         description: transaction.description,

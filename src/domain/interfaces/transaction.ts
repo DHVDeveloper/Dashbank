@@ -1,4 +1,4 @@
-import type { Money } from "@/domain/interfaces/finance/money";
+import type { Money } from "@/domain/interfaces/money";
 
 export type TransactionTypes = 'deposit' | 'withdrawal'
 
@@ -9,3 +9,6 @@ export interface NewTransaction {
     transactionType: TransactionTypes
 }
 
+export interface Transaction extends NewTransaction {
+    id: string
+}
