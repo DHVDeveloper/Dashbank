@@ -1,6 +1,6 @@
 import { useAlertContext } from "@/context/alert/alert.context"
 import { Currency } from "@/domain/interfaces/finance/money"
-import type { Transaction, TransactionTypes } from "@/domain/interfaces/transaction/transaction"
+import type { NewTransaction, TransactionTypes } from "@/domain/interfaces/transaction/transaction"
 import { transactionService } from "@/services/transaction-service"
 import { SelectionCard } from "@/ui/components/card/selection-card"
 import { Button } from "@/ui/components/form/button"
@@ -31,7 +31,7 @@ export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    const newTransaction:Transaction = {
+    const newTransaction:NewTransaction = {
       transactionType: type,
       money: {
         amount: Number(amount),
