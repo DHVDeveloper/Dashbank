@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { CreateTransactionForm } from "./create-transaction-form";
-import { Button } from "@/ui/components/form/button";
-import { Modal } from "@/ui/components/modal/modal";
+import { useState } from "react"
+import { CreateTransactionForm } from "./create-transaction-form"
+import { Button } from "@/ui/components/form/button"
+import { Modal } from "@/ui/components/modal/modal"
 
 export function TransactionsCreate() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -22,8 +22,8 @@ export function TransactionsCreate() {
         onClose={() => setIsAddModalOpen(false)}
         title="New transaction"
       >
-        <CreateTransactionForm />
+        <CreateTransactionForm onClose={() => setIsAddModalOpen(false)} />
       </Modal>
     </div>
-  );
+  )
 }
