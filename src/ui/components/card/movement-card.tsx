@@ -1,4 +1,4 @@
-import type { Money } from "../../../domain/interfaces/finance/money";
+import type { Money } from "../../../domain/interfaces/money";
 import { formatMoney } from "../../../utils/formatMoney";
 import { ArrowUpRight } from "../../icons/arrow-up-right.icon";
 
