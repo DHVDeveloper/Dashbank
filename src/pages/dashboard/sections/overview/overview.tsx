@@ -1,5 +1,5 @@
 import { Currency } from "../../../../domain/finance/interfaces/money.interface";
-import { MovementCard } from "../../../../ui/components/movement-card";
+import { MovementCard } from "../../../../ui/components/card/movement-card";
 import { OverviewBalance } from "./overview-balance";
 
 export function Overview() {

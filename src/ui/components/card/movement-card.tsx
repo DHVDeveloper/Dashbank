@@ -1,6 +1,6 @@
-import type { Money } from "../../domain/finance/interfaces/money.interface";
-import { formatMoney } from "../../utils/formatMoney";
-import { ArrowUpRight } from "../icons/arrow-up-right.icon";
+import type { Money } from "../../../domain/finance/interfaces/money.interface";
+import { formatMoney } from "../../../utils/formatMoney";
+import { ArrowUpRight } from "../../icons/arrow-up-right.icon";
 
 interface MovementsCardProps {
   title: string;
