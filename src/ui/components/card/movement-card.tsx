@@ -1,4 +1,4 @@
-import type { Money } from "../../../domain/finance/interfaces/money.interface";
+import type { Money } from "../../../domain/interfaces/finance/money";
 import { formatMoney } from "../../../utils/formatMoney";
 import { ArrowUpRight } from "../../icons/arrow-up-right.icon";
 
@@ -13,11 +13,11 @@ export function MovementCard({
   money,
   title,
 }: MovementsCardProps) {
-  const amountColor = isExpense ? "text-red-500" : "text-green-500";
+  const amountColor = isExpense ? "text-red-500" : "text-green-500"
   const iconColor = isExpense
     ? "text-red-500  bg-red-100"
-    : "text-green-500 bg-green-100";
-  const iconRotation = isExpense ? "rotate-90" : "";
+    : "text-green-500 bg-green-100"
+  const iconRotation = isExpense ? "rotate-90" : ""
 
   return (
     <div className="bg-secondary-bg-color transition-colors text-primary-text-color/60 shadow  rounded-2xl w-full h-full px-3 py-2 items-center">
@@ -33,5 +33,5 @@ export function MovementCard({
         </div>
       </div>
     </div>
-  );
+  )
 }
