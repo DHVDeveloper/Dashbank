@@ -13,7 +13,7 @@ export function SelectionCard({
 }: SelectionCardProps) {
   return(<div
     onClick={handleSelection}
-    className={`flex-1 cursor-pointer border-2 transition-colors bg-secondary-bg-color rounded-md ${isSelected ? 'border-blue-300 bg-blue-100' : 'dark:border-0 border-gray-300'}`}
+    className={`flex-1 cursor-pointer border-2 transition-colors bg-secondary-bg-color rounded-md ${isSelected ? 'border-black bg-blue-100' : 'dark:border-0 border-gray-300'}`}
   >
     <div className="flex flex-col items-center justify-center p-6 space-y-2">
       {icon}
