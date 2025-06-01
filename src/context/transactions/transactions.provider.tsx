@@ -25,7 +25,6 @@ export function TransactionsProvider({
     totalPages: 0
   })
   const [isLoading, setIsLoading] = useState(true)
-  const { showAlert } = useAlertContext();
 
   useEffect(() => {
     getTransactionHistory()
@@ -48,15 +47,18 @@ export function TransactionsProvider({
   }
   
   const editTransaction = async (transaction: Transaction):Promise<SimpleResult> => {
-
+    setIsLoading(true)
+    const response = await transactionService.editTransaction(transaction)
+    setIsLoading(false)
+    return {
+      success: response.success,
+      errorMessage: response?.error
+    }
   }
 
   const removeTransaction = async (transactionId: string):Promise<SimpleResult> => {
     setIsLoading(true)
     const response = await transactionService.removeTransaction(transactionId)
-    if(response.success) {
-      getTransactionHistory()
-    }
     setIsLoading(false)
     return {
       success: response.success,
@@ -65,10 +67,9 @@ export function TransactionsProvider({
   }
 
   const newTransaction = async (newTransaction:NewTransaction):Promise<SimpleResult> => {
+    setIsLoading(true)
     const response = await transactionService.newTransaction(newTransaction)
-    if(response.success){
-      refreshTransactions()
-    }
+    setIsLoading(false)
     return({
       success: response.success,
       errorMessage: response.error
