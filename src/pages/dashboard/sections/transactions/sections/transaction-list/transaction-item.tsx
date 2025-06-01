@@ -20,7 +20,7 @@ export function TransactionItem({
   handleReuseTransaction,
 }: TransactionItemProps) {
   return (
-    <div className="flex flex-col gap-5 animate-appear bg-secondary-bg-color shadow items-center p-3 rounded-lg hover:bg-gray-50 sm:flex-row sm:p-4">
+    <div className="flex flex-col gap-5 animate-appear bg-secondary-bg-color shadow items-center p-3 rounded-lg hover:bg-secondary-bg-color/80 sm:flex-row sm:p-4">
       <div className="flex flex-1 w-full flex-col gap-4 items-start md:items-center md:flex-row sm:w-auto sm:">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <div className="flex items-center w-full gap-2 sm:w-auto">
