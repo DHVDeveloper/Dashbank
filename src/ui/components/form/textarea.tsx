@@ -1,4 +1,4 @@
-import type { TextareaHTMLAttributes } from "react";
+import type { TextareaHTMLAttributes } from "react"
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string
@@ -13,5 +13,5 @@ export function TextArea({ className = "", ...rest }: TextAreaProps) {
         disabled:opacity-50 disabled:cursor-not-allowed transition-colors
         ${className}`}
     />
-  );
+  )
 }

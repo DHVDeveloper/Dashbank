@@ -1,4 +1,4 @@
-import { Currency } from "../../../../domain/interfaces/finance/money";
+import { Currency } from "../../../../domain/interfaces/money";
 import { MovementCard } from "../../../../ui/components/card/movement-card";
 import { OverviewBalance } from "./overview-balance";
 

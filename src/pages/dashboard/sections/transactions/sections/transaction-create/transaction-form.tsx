@@ -1,14 +1,12 @@
-import { useAlertContext } from "@/context/alert/alert.context"
-import { Currency } from "@/domain/interfaces/finance/money"
-import type { Transaction, TransactionTypes } from "@/domain/interfaces/transaction/transaction"
-import { transactionService } from "@/services/transaction-service"
+import { Currency } from "@/domain/interfaces/money"
+import type { NewTransaction, Transaction, TransactionTypes } from "@/domain/interfaces/transaction"
 import { SelectionCard } from "@/ui/components/card/selection-card"
 import { Button } from "@/ui/components/form/button"
 import { Input } from "@/ui/components/form/input"
 import { TextArea } from "@/ui/components/form/textarea"
 import { ArrowUpRight } from "@/ui/icons/arrow-up-right.icon"
 import { getCurrentDateToForm } from "@/utils/date"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export interface TransactionData {
   amount: number
@@ -16,22 +14,31 @@ export interface TransactionData {
   date: string
 }
 
-interface CreateTransactionFormProps {
+interface TransactionFormProps {
+  isLoading: boolean
+  transaction?: Transaction
+  onSubmit: (transaction:NewTransaction) => void
   onClose: () => void
 }
 
-export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
-  const [amount, setAmount] = useState("")
+export function TransactionForm({transaction,isLoading,onSubmit}:TransactionFormProps) {
+  const [amount, setAmount] = useState('')
   const [type, setType] = useState<TransactionTypes>("deposit")
-  const [isLoading, setIsLoading] = useState(false)
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState('')
   const [date, setDate] = useState(getCurrentDateToForm())
-  const {showAlert} = useAlertContext()
+
+  useEffect(() => {
+    if(transaction) {
+      setAmount(transaction.money.amount.toString())
+      setType(transaction.transactionType)
+      setDescription(transaction.description)
+      setDate(getCurrentDateToForm(transaction.date))
+    }
+  },[transaction])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    const newTransaction:Transaction = {
+    const transactionToHandle:NewTransaction = {
       transactionType: type,
       money: {
         amount: Number(amount),
@@ -40,15 +47,7 @@ export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
       description: description,
       date: new Date(date)
     }
-
-    const response = await transactionService.newTransaction(newTransaction)
-    setIsLoading(false)
-    if(!response.success) {
-      showAlert({message: response.error ?? 'Ha habido un error', type: 'danger'})
-      return
-    }
-    showAlert({message: 'Se ha hecho la transacción correctamente', type: 'success'})
-    onClose()
+    onSubmit(transactionToHandle)
   }
 
   const handleAmountChange = (newAmount:string) => {

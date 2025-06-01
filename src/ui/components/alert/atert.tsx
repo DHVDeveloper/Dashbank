@@ -13,10 +13,10 @@ export function Alert({
   onClose: () => void
 }) {
   const alertStyles:Record<AlertType,string> = {
-    neutral: "bg-gray-200 border-gray-600",
-    success: "bg-green-200 border-green-600",
-    danger: "bg-red-200 border-red-600",
-    warning: "bg-yellow-200 border-yellow-600",
+    neutral: "bg-gray-100 border-gray-600",
+    success: "bg-green-100 border-green-600",
+    danger: "bg-red-100 border-red-600",
+    warning: "bg-yellow-100 border-yellow-600",
   }
 
   return (
