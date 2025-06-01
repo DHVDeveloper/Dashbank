@@ -1,6 +1,6 @@
-import type { ApiResponse, PaginatedResponse } from "@/types/apiResponse"
-import type { NewTransactionRequest, TransactionResponse } from "../interfaces/transaction.external"
 import type { Transaction } from "@/domain/interfaces/transaction"
+import type { ApiResponse, PaginatedResponse } from "@/types/apiResponse"
+import type { NewTransactionRequest, TransactionRequest, TransactionResponse } from "../interfaces/transaction.external"
 
 export function createNewTransaction(
   transaction: NewTransactionRequest
@@ -74,6 +74,32 @@ export function removeTransactionById(
         : []
         
       const transactionListEdited = transactionList.filter((transaction) => transaction.id !== transactionId)
+
+      localStorage.setItem("transactions", JSON.stringify(transactionListEdited))
+
+      resolve({
+        success: true,
+      })
+    }, 200)
+  })
+}
+
+export function editTransactionByTransaction(
+  transactionToEdit: TransactionRequest
+): Promise<ApiResponse<Transaction>> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const transactionListStorage = localStorage.getItem("transactions")
+      const transactionList: TransactionResponse[] = transactionListStorage
+        ? JSON.parse(transactionListStorage)
+        : []
+        
+      const transactionListEdited = transactionList.map((transaction) => {
+        if(transaction.id === transactionToEdit.id) {
+          return {...transaction, ...transactionToEdit}
+        } 
+        return transaction
+      })
 
       localStorage.setItem("transactions", JSON.stringify(transactionListEdited))
 
