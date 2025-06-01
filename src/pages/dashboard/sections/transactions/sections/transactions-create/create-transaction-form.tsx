@@ -1,7 +1,7 @@
 import { useAlertContext } from "@/context/alert/alert.context"
-import { Currency } from "@/domain/interfaces/finance/money"
-import type { NewTransaction, TransactionTypes } from "@/domain/interfaces/transaction/transaction"
-import { transactionService } from "@/services/transaction-service"
+import { useTransactionsContext } from "@/context/transactions/transactions.context"
+import { Currency } from "@/domain/interfaces/money"
+import type { NewTransaction, TransactionTypes } from "@/domain/interfaces/transaction"
 import { SelectionCard } from "@/ui/components/card/selection-card"
 import { Button } from "@/ui/components/form/button"
 import { Input } from "@/ui/components/form/input"
@@ -26,12 +26,13 @@ export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [description, setDescription] = useState("")
   const [date, setDate] = useState(getCurrentDateToForm())
+  const {newTransaction} = useTransactionsContext()
   const {showAlert} = useAlertContext()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    const newTransaction:NewTransaction = {
+    const transactionToAdd:NewTransaction = {
       transactionType: type,
       money: {
         amount: Number(amount),
@@ -41,13 +42,13 @@ export function CreateTransactionForm({onClose}:CreateTransactionFormProps) {
       date: new Date(date)
     }
 
-    const response = await transactionService.newTransaction(newTransaction)
+    const response = await newTransaction(transactionToAdd)
     setIsLoading(false)
     if(!response.success) {
-      showAlert({message: response.error ?? 'Ha habido un error', type: 'danger'})
+      showAlert({message: response.errorMessage ?? 'There has been an error.', type: 'danger'})
       return
     }
-    showAlert({message: 'Se ha hecho la transacción correctamente', type: 'success'})
+    showAlert({message: 'The transaction has been made successfully.', type: 'success'})
     onClose()
   }
 
