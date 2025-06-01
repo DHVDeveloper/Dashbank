@@ -1,18 +1,21 @@
+import { useEffect, useRef, useState } from "react"
 import { useTransactionsContext } from "@/context/transactions/transactions.context"
 import { TransactionItem } from "./transaction-item"
 import { TransactionItemSkeleton } from "./transaction-item.skeleton"
 import { useAlertContext } from "@/context/alert/alert.context"
 import { Modal } from "@/ui/components/modal/modal"
 import { TransactionForm } from "../transaction-create/transaction-form"
-import { useEffect, useState } from "react"
 import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction"
 
 type ModalMode = "edit" | "reuse" | null
 
-export function TransactionsList() {
+interface TransactionsListProps {
+  transactionList: Transaction[]
+  transactionsLoading: boolean
+}
+
+export function TransactionsList({ transactionList, transactionsLoading}: TransactionsListProps) {
   const {
-    transactionList,
-    transactionsLoading,
     refreshTransactions,
     removeTransaction,
     editTransaction,
@@ -23,7 +26,7 @@ export function TransactionsList() {
   const [isModalLoading, setIsModalLoading] = useState(false)
   const [transactionModal, setTransactionModal] = useState<Transaction | null>(null)
   const [modalMode, setModalMode] = useState<ModalMode>(null)
-
+  const containerRef = useRef<HTMLDivElement>(null)
   const { showAlert } = useAlertContext()
 
   useEffect(() => {
@@ -32,6 +35,11 @@ export function TransactionsList() {
     }
   }, [transactionModal, modalMode])
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [transactionList])
 
   const openModal = (transaction: Transaction, mode: ModalMode) => {
     setTransactionModal(transaction)
@@ -107,21 +115,23 @@ export function TransactionsList() {
   }
 
   return (
-    <div className="flex flex-col h-[400px] overflow-y-auto p-2 gap-2 py-2">
-      {transactionsLoading
-        ? Array.from({ length: 4 }).map((_, index) => (
-            <TransactionItemSkeleton key={index} />
-          ))
-        : transactionList.length > 0 &&
-          transactionList.map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              transaction={transaction}
-              handleEditTransaction={handleEditTransaction}
-              handleRemoveTransaction={handleRemoveTransaction}
-              handleReuseTransaction={handleReuseTransaction}
-            />
-          ))}
+    <>
+      <div ref={containerRef} className="flex flex-col h-[25rem] overflow-y-auto p-2 gap-2 py-2">
+        {transactionsLoading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <TransactionItemSkeleton key={index} />
+            ))
+          : transactionList.length > 0 &&
+            transactionList.map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                transaction={transaction}
+                handleEditTransaction={handleEditTransaction}
+                handleRemoveTransaction={handleRemoveTransaction}
+                handleReuseTransaction={handleReuseTransaction}
+              />
+            ))}
+      </div>
 
       <Modal
         isOpen={isModalOpen}
@@ -136,6 +146,6 @@ export function TransactionsList() {
           onClose={closeModal}
         />
       </Modal>
-    </div>
+    </>
   )
 }
