@@ -5,7 +5,7 @@ type TransactionTypesRepository = 'deposit' | 'withdrawal'
 
 export interface NewTransactionRequest {
     money: MoneyRepository
-    date: Date
+    date: string
     description: string
     transactionType: TransactionTypesRepository
 }
@@ -13,5 +13,10 @@ export interface NewTransactionRequest {
 export interface TransactionResponse extends NewTransactionRequest{
     id: string
 }
+
+export interface TransactionRequest extends NewTransactionRequest{
+    id: string
+}
+
 
 

@@ -1,11 +1,24 @@
-import type { NewTransaction } from "@/domain/interfaces/transaction";
-import type { NewTransactionRequest } from "../interfaces/transaction.external";
+import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction";
+import type { NewTransactionRequest, TransactionRequest } from "../interfaces/transaction.external";
 import { Currency } from "@/domain/interfaces/money";
 import { CurrencyRepository } from "../interfaces/money.external";
 
 export function mapNewtransactionToNewTransactionRequest(transaction:NewTransaction): NewTransactionRequest {
     return {
-        date: transaction.date,
+        date: transaction.date.toString(),
+        description: transaction.description,
+        transactionType: transaction.transactionType,
+        money: {
+            amount: transaction.money.amount,
+            currency: mapCurrencyToCurrencyResponse(transaction.money.currency)
+        },
+    }
+}
+
+export function mapTransactionToTransactionRequest(transaction:Transaction): TransactionRequest {
+    return {
+        id: transaction.id,
+        date: transaction.date.toString(),
         description: transaction.description,
         transactionType: transaction.transactionType,
         money: {

@@ -6,7 +6,7 @@ import { Currency } from "../interfaces/money";
 export function mapTransactionRequestToTransaction(transactionResponse:TransactionResponse): Transaction {
     return {
         id: transactionResponse.id,
-        date: transactionResponse.date,
+        date: new Date(transactionResponse.date),
         description: transactionResponse.description,
         transactionType: transactionResponse.transactionType,
         money: {
