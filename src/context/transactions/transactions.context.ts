@@ -1,13 +1,16 @@
 import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction"
 import type { SimpleResult } from "@/types/results"
 import { createContext, useContext } from "react"
+import type { PaginationInfo } from "./transactions.provider"
 
 interface TransactionsContextType {
   transactionList: Transaction[]
   transactionsLoading:boolean
+  paginationInfo: PaginationInfo
   newTransaction: (newTransactions:NewTransaction) => Promise<SimpleResult>
   editTransaction: (transactionId:Transaction) => Promise<SimpleResult>
   removeTransaction: (transactionId:string) => Promise<SimpleResult>
+  handlePage: (newPage:number) => void
   refreshTransactions: () => void
 }
 
