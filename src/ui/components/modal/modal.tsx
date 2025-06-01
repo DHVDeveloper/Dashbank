@@ -6,9 +6,10 @@ interface ModalProps {
   title: string
   children: React.ReactNode
   onClose: () => void
+  onClosed?: () => void
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({ isOpen, onClose, onClosed, title, children }: ModalProps) {
   const [visible, setVisible] = useState(isOpen)
   const modalRef = useRef(null)
 
@@ -18,7 +19,13 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     if (isOpen) {
       setVisible(true)
     } else {
-      const timeout = setTimeout(() => {setVisible(false)}, 300)
+      const timeout = setTimeout(() => {
+        setVisible(false)
+        if(onClosed) {
+          onClosed()
+        }
+      }, 300)
+      
       return () => clearTimeout(timeout)
     }
   }, [isOpen])
