@@ -1,12 +1,14 @@
-import { TransactionsCreate } from "./sections/transactions-create/transactions-create";
-import { TransactionsList } from "./sections/transactions-list/transactions-list";
+import { TransactionsCreate } from "./sections/transaction-create/transaction-create";
+import { TransactionListSection } from "./sections/transaction-list/transaction-list-section";
 
 export function Transactions(){
     return(<div className="w-full h-auto">
-        <div className="flex flex-col">
-            <h3 className="text-sm text-primary-text-color font-black">TRANSACTIONS</h3>
-            <TransactionsCreate/>
-            <TransactionsList/>
+        <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+                <h3 className="text-sm text-primary-text-color font-black">TRANSACTIONS</h3>
+                <TransactionsCreate/>
+            </div>
+            <TransactionListSection/>
         </div>
     </div>)
 }
