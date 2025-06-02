@@ -5,7 +5,7 @@ import { CurrencyRepository } from "../interfaces/money.external";
 
 export function mapNewtransactionToNewTransactionRequest(transaction:NewTransaction): NewTransactionRequest {
     return {
-        date: transaction.date.toString(),
+        date: transaction.date.toISOString(),
         description: transaction.description,
         transactionType: transaction.transactionType,
         money: {
@@ -18,7 +18,8 @@ export function mapNewtransactionToNewTransactionRequest(transaction:NewTransact
 export function mapTransactionToTransactionRequest(transaction:Transaction): TransactionRequest {
     return {
         id: transaction.id,
-        date: transaction.date.toString(),
+        date: transaction.date.toISOString(),
+        createdAt: transaction.createdAt.toISOString(),
         description: transaction.description,
         transactionType: transaction.transactionType,
         money: {

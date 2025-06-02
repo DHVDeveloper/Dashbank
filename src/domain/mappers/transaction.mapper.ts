@@ -7,6 +7,7 @@ export function mapTransactionRequestToTransaction(transactionResponse:Transacti
     return {
         id: transactionResponse.id,
         date: new Date(transactionResponse.date),
+        createdAt: new Date(transactionResponse.createdAt),
         description: transactionResponse.description,
         transactionType: transactionResponse.transactionType,
         money: {
