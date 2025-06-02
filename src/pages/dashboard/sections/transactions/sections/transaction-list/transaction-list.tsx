@@ -109,8 +109,6 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
       }
       showAlert({ type: "success", message: "The transaction has been created successfully." })
     }
-
-    refreshTransactions()
     closeModal()
   }
 
@@ -132,7 +130,6 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
               />
             ))}
       </div>
-
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
