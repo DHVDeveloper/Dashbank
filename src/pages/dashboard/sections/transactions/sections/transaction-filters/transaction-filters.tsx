@@ -26,7 +26,6 @@ export function TransactionFilters() {
     }
 
     const handleFiltersApplied = async (filters:TransactionFormFilters) => {
-        console.log(filters);
         handleFilters(filters)
         setModalIsOpen(false)
     }
@@ -37,8 +36,8 @@ export function TransactionFilters() {
     }
 
     return(
-        <div className="flex gap-2">
-            <Input onChange={(e) => handleFilterDescription(e.target.value)} placeholder="Filter by description..."/>
+        <div className="flex gap-2 w-full md:w-auto">
+            <Input className="w-full" onChange={(e) => handleFilterDescription(e.target.value)} placeholder="Filter by description..."/>
             <Button onClick={() => setModalIsOpen(true)}><FilterIcon/></Button>
             <Modal title="Transaction filters" onClose={() => setModalIsOpen(false)} isOpen={modalIsOpen}>
                 <TransactionFiltersForm  isLoading={transactionsLoading} resetFilters={handleResetFilters} handleFiltersApplied={handleFiltersApplied} filters={filters} />

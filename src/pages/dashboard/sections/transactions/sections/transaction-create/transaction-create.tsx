@@ -24,14 +24,15 @@ export function TransactionsCreate() {
     setIsLoading(false)
   }
   return (
-    <div>
-      <div className="flex justify-end items-center">
+    <div className="bg-red-500 flex-1 md:flex-0">
+      <div className="flex justify-end w-full items-center">
         <Button
+          className="w-full"
           onClick={() => {
             setIsModalOpen(true)
           }}
         >
-          <span>+ New Transaction</span>
+          <span className="text-nowrap">+ New Transaction</span>
         </Button>
       </div>
       <Modal
