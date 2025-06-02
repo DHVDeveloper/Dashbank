@@ -1,4 +1,4 @@
-import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction"
+import type { NewTransaction, Transaction, TransactionFilters } from "@/domain/interfaces/transaction"
 import type { SimpleResult } from "@/types/results"
 import { createContext, useContext } from "react"
 import type { PaginationInfo } from "./transactions.provider"
@@ -7,11 +7,14 @@ interface TransactionsContextType {
   transactionList: Transaction[]
   transactionsLoading:boolean
   paginationInfo: PaginationInfo
+  currentFilters: TransactionFilters
   newTransaction: (newTransactions:NewTransaction) => Promise<SimpleResult>
   editTransaction: (transactionId:Transaction) => Promise<SimpleResult>
   removeTransaction: (transactionId:string) => Promise<SimpleResult>
   handlePage: (newPage:number) => void
   refreshTransactions: () => void
+  handleFilters: (newFilter:Partial<TransactionFilters>) => void
+  resetFilters: () => void
 }
 
 export const TransactionsContext = createContext<TransactionsContextType | null>(null)
