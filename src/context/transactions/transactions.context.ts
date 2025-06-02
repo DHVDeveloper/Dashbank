@@ -11,6 +11,7 @@ interface TransactionsContextType {
   newTransaction: (newTransactions:NewTransaction) => Promise<SimpleResult>
   editTransaction: (transactionId:Transaction) => Promise<SimpleResult>
   removeTransaction: (transactionId:string) => Promise<SimpleResult>
+  revertLastTransaction: () => Promise<SimpleResult> 
   handlePage: (newPage:number) => void
   refreshTransactions: () => void
   handleFilters: (newFilter:Partial<TransactionFilters>) => void
