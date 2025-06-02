@@ -1,6 +1,7 @@
 import type {
   NewTransaction,
   Transaction,
+  TransactionFilters,
 } from "@/domain/interfaces/transaction"
 import { transactionService } from "@/services/transaction-service"
 import type { SimpleResult } from "@/types/results"
@@ -18,6 +19,12 @@ export function TransactionsProvider({
 }: {
   children: React.ReactNode
 }) {
+  const [filters, setFilters] = useState<TransactionFilters>({
+    description: "",
+    dateFrom: null,
+    dateTo: null,
+    transactionType: null,
+  })
   const [transactionList, setTransactionList] = useState<Transaction[]>([])
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     page: 1,
@@ -28,70 +35,101 @@ export function TransactionsProvider({
 
   useEffect(() => {
     getTransactionHistory()
-  }, [paginationInfo.page])
+  }, [paginationInfo.page, paginationInfo.pageSize])
 
-  const handlePage = (newActualPage: number) => {
-    if (newActualPage > paginationInfo.totalPages) return
-    setPaginationInfo({ ...paginationInfo, page: newActualPage })
+  useEffect(() => {
+    if (paginationInfo.page !== 1) {
+      setPaginationInfo(prev => ({ ...prev, page: 1 }))
+    } else {
+      getTransactionHistory()
+    }
+  }, [filters])
+
+  const handlePage = (newPage: number) => {
+    if (newPage > paginationInfo.totalPages || newPage < 1) return
+    setPaginationInfo(prev => ({ ...prev, page: newPage }))
   }
 
   const getTransactionHistory = async (): Promise<SimpleResult> => {
     setIsLoading(true)
-    const response = await transactionService.getTransactionHistory(paginationInfo.page, paginationInfo.pageSize)
-    setTransactionList(response?.data?.data ?? [])
-    setPaginationInfo({
-      ...paginationInfo,
-      totalPages: response.data?.totalPages ?? 0,
+    try {
+      const response = await transactionService.getTransactionHistory(
+        paginationInfo.page,
+        paginationInfo.pageSize,
+        filters
+      )
+      
+      setTransactionList(response?.data?.data ?? [])
+      setPaginationInfo(prev => ({
+        ...prev,
+        page: response.data?.page ?? prev.page,
+        totalPages: response.data?.totalPages ?? 0,
+      }))
+      
+      return {
+        success: response.success,
+        errorMessage: response?.error,
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const refreshTransactions = async () => {
+    return await getTransactionHistory()
+  }
+
+  const editTransaction = async (transaction: Transaction): Promise<SimpleResult> => {
+    const result = await transactionService.editTransaction(transaction)
+    if(result.success) refreshTransactions()
+    return {
+      success: result.success,
+      errorMessage: result?.error,
+    }
+  }
+
+  const removeTransaction = async (transactionId: string): Promise<SimpleResult> => {
+    const result = await transactionService.removeTransaction(transactionId)
+    if(result.success) refreshTransactions()
+    return {
+      success: result.success,
+      errorMessage: result?.error,
+    }
+  }
+
+  const newTransaction = async (newTransactionData: NewTransaction): Promise<SimpleResult> => {
+    console.log('ddd')
+    const result = await transactionService.newTransaction(newTransactionData)
+    
+    if (paginationInfo.page !== 1) {
+      setPaginationInfo(prev => ({ ...prev, page: 1 }))
+    } else {
+      await refreshTransactions()
+    }
+    
+    return {
+      success: result.success,
+      errorMessage: result.error,
+    }
+  }
+
+  const handleFilters = (newFilter: Partial<TransactionFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilter }))
+  }
+
+  const resetFilters = () => {
+    setFilters({
+      description: "",
+      dateFrom: null,
+      dateTo: null,
+      transactionType: null,
     })
-    setIsLoading(false)
-    return {
-      success: response.success,
-      errorMessage: response?.error,
-    }
   }
 
-  const refreshTransactions = () => {
-    getTransactionHistory()
-  }
-
-  const editTransaction = async (
-    transaction: Transaction
-  ): Promise<SimpleResult> => {
-    setIsLoading(true)
-    const response = await transactionService.editTransaction(transaction)
-    setIsLoading(false)
-    return {
-      success: response.success,
-      errorMessage: response?.error,
-    }
-  }
-
-  const removeTransaction = async (
-    transactionId: string
-  ): Promise<SimpleResult> => {
-    setIsLoading(true)
-    const response = await transactionService.removeTransaction(transactionId)
-    setIsLoading(false)
-    return {
-      success: response.success,
-      errorMessage: response?.error,
-    }
-  }
-
-  const newTransaction = async (
-    newTransaction: NewTransaction
-  ): Promise<SimpleResult> => {
-    setIsLoading(true)
-    const response = await transactionService.newTransaction(newTransaction)
-    setIsLoading(false)
-    return {
-      success: response.success,
-      errorMessage: response.error,
-    }
-  }
   return (
     <TransactionsContext.Provider
       value={{
+        currentFilters: filters,
         transactionsLoading: isLoading,
         paginationInfo,
         transactionList,
@@ -100,6 +138,8 @@ export function TransactionsProvider({
         removeTransaction,
         refreshTransactions,
         handlePage,
+        handleFilters,
+        resetFilters,
       }}
     >
       {children}

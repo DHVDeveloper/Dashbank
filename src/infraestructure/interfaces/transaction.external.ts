@@ -12,10 +12,12 @@ export interface NewTransactionRequest {
 
 export interface TransactionResponse extends NewTransactionRequest{
     id: string
+    createdAt: string
 }
 
 export interface TransactionRequest extends NewTransactionRequest{
     id: string
+    createdAt: string
 }
 
 

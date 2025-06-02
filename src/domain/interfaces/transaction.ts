@@ -11,4 +11,12 @@ export interface NewTransaction {
 
 export interface Transaction extends NewTransaction {
     id: string
+    createdAt: Date
+}
+
+export interface TransactionFilters {
+    description: string
+    dateFrom: Date | null
+    dateTo: Date | null
+    transactionType: TransactionTypes | null
 }

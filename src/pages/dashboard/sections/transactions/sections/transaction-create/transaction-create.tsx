@@ -10,7 +10,7 @@ export function TransactionsCreate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { showAlert } = useAlertContext()
-  const {newTransaction, refreshTransactions} = useTransactionsContext()
+  const {newTransaction} = useTransactionsContext()
 
   const handleCreateTransaction = async (transaction:NewTransaction) => {
     setIsLoading(true)
@@ -20,7 +20,6 @@ export function TransactionsCreate() {
       return
     }
     showAlert({type: 'success',message: 'The transaction has been made successfully.'})
-    refreshTransactions()
     setIsModalOpen(false)
     setIsLoading(false)
   }

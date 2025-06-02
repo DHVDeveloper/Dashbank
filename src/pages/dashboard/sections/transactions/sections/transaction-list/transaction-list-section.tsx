@@ -12,6 +12,7 @@ export function TransactionListSection() {
   return (
     <div className="flex-1 pb-4">
       <TransactionListPagination
+        isLoading={transactionsLoading}
         paginationInfo={paginationInfo}
         onPageChange={handlePagination}
       >
