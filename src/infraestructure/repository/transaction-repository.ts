@@ -1,6 +1,13 @@
-import type { Transaction } from "@/domain/interfaces/transaction"
-import type { ApiResponse, PaginatedResponse } from "@/types/apiResponse"
-import type { NewTransactionRequest, TransactionRequest, TransactionResponse } from "../interfaces/transaction.external"
+import type {
+  Transaction,
+  TransactionFilters,
+} from "@/domain/interfaces/transaction"
+import type { ApiResponse, PaginatedResponse } from "@/types/api-response"
+import type {
+  NewTransactionRequest,
+  TransactionRequest,
+  TransactionResponse,
+} from "../interfaces/transaction.external"
 
 export function createNewTransaction(
   transaction: NewTransactionRequest
@@ -11,8 +18,9 @@ export function createNewTransaction(
       const transactionList: TransactionResponse[] = transactionListStorage
         ? JSON.parse(transactionListStorage)
         : []
-      const id = Date.now().toString(36) + Math.random().toString(36).substring(2)
-      transactionList.push({id: id,...transaction})
+      const id =
+        Date.now().toString(36) + Math.random().toString(36).substring(2)
+      transactionList.push({ id: id, createdAt: new Date().toISOString(), ...transaction })
 
       localStorage.setItem("transactions", JSON.stringify(transactionList))
 
@@ -26,7 +34,8 @@ export function createNewTransaction(
 
 export function getTransactionHistoryData(
   page: number,
-  size: number
+  size: number,
+  filters?: Partial<TransactionFilters>
 ): Promise<ApiResponse<PaginatedResponse<TransactionResponse>>> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -34,11 +43,20 @@ export function getTransactionHistoryData(
       const allTransactions: TransactionResponse[] = transactionListStorage
         ? JSON.parse(transactionListStorage)
         : []
+      
+      let transactionsToReturn = [...allTransactions]
+      transactionsToReturn.sort((a, b) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      })
+
+      if (filters) {
+        transactionsToReturn = getTransactionsByFilters(filters, transactionsToReturn)
+      }
 
       const startItemIndex = (page - 1) * size
       const endItemIndex = startItemIndex + size
-      const paginatedData = allTransactions.slice(startItemIndex, endItemIndex)
-      const total = allTransactions.length
+      const paginatedData = transactionsToReturn.slice(startItemIndex, endItemIndex)
+      const total = transactionsToReturn.length
       const totalPages = Math.ceil(total / size)
 
       if (page > totalPages && totalPages > 0) {
@@ -72,10 +90,15 @@ export function removeTransactionById(
       const transactionList: TransactionResponse[] = transactionListStorage
         ? JSON.parse(transactionListStorage)
         : []
-        
-      const transactionListEdited = transactionList.filter((transaction) => transaction.id !== transactionId)
 
-      localStorage.setItem("transactions", JSON.stringify(transactionListEdited))
+      const transactionListEdited = transactionList.filter(
+        (transaction) => transaction.id !== transactionId
+      )
+
+      localStorage.setItem(
+        "transactions",
+        JSON.stringify(transactionListEdited)
+      )
 
       resolve({
         success: true,
@@ -93,19 +116,59 @@ export function editTransactionByTransaction(
       const transactionList: TransactionResponse[] = transactionListStorage
         ? JSON.parse(transactionListStorage)
         : []
-        
+
       const transactionListEdited = transactionList.map((transaction) => {
-        if(transaction.id === transactionToEdit.id) {
-          return {...transaction, ...transactionToEdit}
-        } 
+        if (transaction.id === transactionToEdit.id) {
+          return { ...transaction, ...transactionToEdit }
+        }
         return transaction
       })
 
-      localStorage.setItem("transactions", JSON.stringify(transactionListEdited))
+      localStorage.setItem(
+        "transactions",
+        JSON.stringify(transactionListEdited)
+      )
 
       resolve({
         success: true,
       })
     }, 200)
   })
+}
+
+export function getTransactionsByFilters(
+  filters: Partial<TransactionFilters>,
+  allTransactions: TransactionResponse[]
+): TransactionResponse[] {
+  const transactionsFiltered = allTransactions.filter((transaction) => {
+    const transactionDate = new Date(transaction.date)
+    if (
+      filters.description && 
+      filters.description !== "" && 
+      !transaction.description
+        .toLowerCase()
+        .includes(filters.description.toLowerCase())
+    ) {
+      return false
+    }
+
+    if (
+      filters.transactionType &&
+      transaction.transactionType !== filters.transactionType
+    ) {
+      return false
+    }
+
+    if (filters.dateFrom && transactionDate <= filters.dateFrom) {
+      return false
+    }
+
+    if (filters.dateTo && transactionDate >= filters.dateTo) {
+      return false
+    }
+
+    return true
+  })
+
+  return transactionsFiltered
 }
