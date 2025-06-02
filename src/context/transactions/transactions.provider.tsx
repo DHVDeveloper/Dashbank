@@ -98,7 +98,6 @@ export function TransactionsProvider({
   }
 
   const newTransaction = async (newTransactionData: NewTransaction): Promise<SimpleResult> => {
-    console.log('ddd')
     const result = await transactionService.newTransaction(newTransactionData)
     
     if (paginationInfo.page !== 1) {
@@ -111,6 +110,16 @@ export function TransactionsProvider({
       success: result.success,
       errorMessage: result.error,
     }
+  }
+
+  const revertLastTransaction = async () => {
+    const result = await transactionService.revertLastTransaction()
+    if (paginationInfo.page !== 1) {
+      setPaginationInfo(prev => ({ ...prev, page: 1 }))
+    } else {
+      await refreshTransactions()
+    }
+    return result
   }
 
   const handleFilters = (newFilter: Partial<TransactionFilters>) => {
@@ -137,6 +146,7 @@ export function TransactionsProvider({
         newTransaction,
         removeTransaction,
         refreshTransactions,
+        revertLastTransaction,
         handlePage,
         handleFilters,
         resetFilters,
