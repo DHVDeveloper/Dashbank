@@ -1,5 +1,7 @@
+import { useAlertContext } from "@/context/alert/alert.context"
 import { Currency } from "@/domain/interfaces/money"
-import type { NewTransaction, Transaction, TransactionTypes } from "@/domain/interfaces/transaction"
+import type { NewTransaction, Transaction, TransactionToCheck, TransactionTypes } from "@/domain/interfaces/transaction"
+import type { SimpleResult } from "@/types/results"
 import { SelectionCard } from "@/ui/components/card/selection-card"
 import { Button } from "@/ui/components/form/button"
 import { Input } from "@/ui/components/form/input"
@@ -17,15 +19,18 @@ export interface TransactionData {
 interface TransactionFormProps {
   isLoading: boolean
   transaction?: Transaction
+  transactionType: 'new' | 'edit'
   onSubmit: (transaction:NewTransaction) => void
+  hasEnoughBalance: (transactionToCheck:TransactionToCheck, prevTransaction?:Transaction) => SimpleResult
   onClose: () => void
 }
 
-export function TransactionForm({transaction,isLoading,onSubmit}:TransactionFormProps) {
+export function TransactionForm({transaction,isLoading,transactionType,hasEnoughBalance, onSubmit}:TransactionFormProps) {
   const [amount, setAmount] = useState('')
   const [type, setType] = useState<TransactionTypes>("deposit")
   const [description, setDescription] = useState('')
   const [date, setDate] = useState(getCurrentDateToForm())
+  const {showAlert} = useAlertContext()
 
   useEffect(() => {
     if(transaction) {
@@ -38,6 +43,10 @@ export function TransactionForm({transaction,isLoading,onSubmit}:TransactionForm
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if(Number(amount) <= 0) {
+      showAlert({type: 'danger',message: 'Amount must be greater than zero.'})
+      return
+    }
     const transactionToHandle:NewTransaction = {
       transactionType: type,
       money: {
@@ -47,9 +56,20 @@ export function TransactionForm({transaction,isLoading,onSubmit}:TransactionForm
       description: description,
       date: new Date(date)
     }
+    const transactionToCheck:TransactionToCheck = {
+      money: transactionToHandle.money,
+      transactionHandleType: transactionType,
+      transactionType: transactionToHandle.transactionType
+    }
+
+    const enoughBalance = hasEnoughBalance(transactionToCheck,transaction)
+    if(!enoughBalance.success) {
+      showAlert({type: 'danger',message: enoughBalance.errorMessage ?? 'Error on transaction.'})
+      return
+    }
     onSubmit(transactionToHandle)
   }
-
+  
   const handleAmountChange = (newAmount:string) => {
     if (/^\d*\.?\d{0,2}$/.test(newAmount)) {
       setAmount(newAmount)
@@ -112,8 +132,8 @@ export function TransactionForm({transaction,isLoading,onSubmit}:TransactionForm
         <Input
           id="transaction-date"
           type="date"
-          min={getCurrentDateToForm(transaction?.date) ?? getCurrentDateToForm(new Date())}
-          value={date}
+          min={transactionType === 'edit' ? getCurrentDateToForm(transaction?.date) : getCurrentDateToForm(new Date())}
+          value={transactionType === 'edit' ? date : getCurrentDateToForm(new Date())}
           onChange={(e) => handleDateChange(e.target.value)}
           required
         />

@@ -10,7 +10,7 @@ import { useBalanceOverviewContext } from "@/context/balance-overview/balance-ov
 export function TransactionsCreate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const {refreshBalance} = useBalanceOverviewContext()
+  const {refreshBalance, hasEnoughBalance} = useBalanceOverviewContext()
   const { showAlert } = useAlertContext()
   const {newTransaction} = useTransactionsContext()
 
@@ -27,6 +27,7 @@ export function TransactionsCreate() {
     setIsModalOpen(false)
     setIsLoading(false)
   }
+
   return (
     <div className="flex-1 md:flex-0">
       <div className="flex justify-end w-full items-center">
@@ -44,7 +45,7 @@ export function TransactionsCreate() {
         onClose={() => setIsModalOpen(false)}
         title="New transaction"
       >
-        <TransactionForm onClose={() => setIsModalOpen(false)} isLoading={isLoading} onSubmit={handleCreateTransaction}/>
+        <TransactionForm transactionType="new" onClose={() => setIsModalOpen(false)} isLoading={isLoading} hasEnoughBalance={hasEnoughBalance} onSubmit={handleCreateTransaction}/>
       </Modal>
     </div>
   )

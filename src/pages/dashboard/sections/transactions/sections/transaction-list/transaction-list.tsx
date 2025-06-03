@@ -27,7 +27,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
   const [isModalLoading, setIsModalLoading] = useState(false)
   const [transactionModal, setTransactionModal] = useState<Transaction | null>(null)
   const [modalMode, setModalMode] = useState<ModalMode>(null)
-  const {refreshBalance} = useBalanceOverviewContext()
+  const {refreshBalance, hasEnoughBalance} = useBalanceOverviewContext()
   const containerRef = useRef<HTMLDivElement>(null)
   const { showAlert } = useAlertContext()
 
@@ -141,9 +141,11 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
         title={modalMode === "edit" ? "Edit Transaction" : "Reuse Transaction"}
       >
         <TransactionForm
+          transactionType={modalMode === "edit" ? 'edit' : 'new'}
           transaction={transactionModal ?? undefined}
           isLoading={isModalLoading}
           onSubmit={handleSubmit}
+          hasEnoughBalance={hasEnoughBalance}
           onClose={closeModal}
         />
       </Modal>

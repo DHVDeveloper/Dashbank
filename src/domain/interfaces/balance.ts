@@ -5,3 +5,9 @@ export interface Balance {
   incomeBalance: Money
   expensesBalance: Money
 }
+
+export interface BalanceValidation {
+  success: boolean;
+  errorMessage?: string;
+  currentBalance?: number;
+}

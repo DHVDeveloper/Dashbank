@@ -1,10 +1,12 @@
 import { useAlertContext } from "@/context/alert/alert.context";
+import { useBalanceOverviewContext } from "@/context/balance-overview/balance-overview.context";
 import { useTransactionsContext } from "@/context/transactions/transactions.context";
 import { Button } from "@/ui/components/form/button";
 import { ArrowBackIcon } from "@/ui/icons/arrow-back.icon";
 
 export function TransactionRevert(){
     const {transactionList, revertLastTransaction} = useTransactionsContext()
+    const {refreshBalance} = useBalanceOverviewContext()
     const {showAlert} = useAlertContext()
     const handleRevertLastTransaction = async () => {
         const response = await revertLastTransaction()
@@ -12,6 +14,7 @@ export function TransactionRevert(){
             showAlert({type: 'danger', message: response.errorMessage ?? 'Error reversing the last transaction'})
             return
         }
+        refreshBalance()
         showAlert({type: 'success', message: 'Last transaction has been reversed'})
     }
 
