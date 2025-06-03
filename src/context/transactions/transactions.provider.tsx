@@ -135,6 +135,13 @@ export function TransactionsProvider({
     })
   }
 
+  const handleImportTransactions = async (transactions:NewTransaction[]) => {
+    setIsLoading(true)
+    const result = await transactionService.importTransactions(transactions)
+    setIsLoading(false)
+    return result
+  }
+
   return (
     <TransactionsContext.Provider
       value={{
@@ -149,6 +156,7 @@ export function TransactionsProvider({
         revertLastTransaction,
         handlePage,
         handleFilters,
+        handleImportTransactions,
         resetFilters,
       }}
     >

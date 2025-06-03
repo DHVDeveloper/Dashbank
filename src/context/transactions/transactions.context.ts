@@ -15,6 +15,7 @@ interface TransactionsContextType {
   handlePage: (newPage:number) => void
   refreshTransactions: () => void
   handleFilters: (newFilter:Partial<TransactionFilters>) => void
+  handleImportTransactions: (transactions:NewTransaction[]) => Promise<SimpleResult> 
   resetFilters: () => void
 }
 

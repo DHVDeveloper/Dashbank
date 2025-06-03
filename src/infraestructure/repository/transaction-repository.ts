@@ -46,8 +46,14 @@ export function getTransactionHistoryData(
       
       let transactionsToReturn = [...allTransactions]
       transactionsToReturn.sort((a, b) => {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      })
+        const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+        
+        if (dateDiff === 0) {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }
+        
+        return dateDiff
+      });
 
       if (filters) {
         transactionsToReturn = getTransactionsByFilters(filters, transactionsToReturn)
@@ -210,4 +216,35 @@ export function revertLastCreatedTransaction(): Promise<ApiResponse<Transaction>
       })
     }, 200)
   })
+}
+
+export function importTransactionsFromList(
+  transactionListToImport: NewTransactionRequest[]
+): Promise<ApiResponse<NewTransactionRequest[]>> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      try {
+        const importedTransactions = transactionListToImport.map(transaction => {
+          const id = Date.now().toString(36) + Math.random().toString(36).substring(2);
+          return { 
+            id, 
+            createdAt: new Date().toISOString(), 
+            ...transaction 
+          };
+        });
+
+        localStorage.setItem("transactions", JSON.stringify(importedTransactions));
+
+        resolve({
+          success: true,
+          data: transactionListToImport,
+        });
+      } catch {
+        resolve({
+          success: false,
+          error: "Failed to import transactions",
+        });
+      }
+    }, 200);
+  });
 }
