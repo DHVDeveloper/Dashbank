@@ -1,5 +1,6 @@
 import { TransactionsCreate } from "./sections/transaction-create/transaction-create";
 import { TransactionFilters } from "./sections/transaction-filters/transaction-filters";
+import { TransactionImportExport } from "./sections/transaction-import-export/transaction-import-export";
 import { TransactionListSection } from "./sections/transaction-list/transaction-list-section";
 import { TransactionRevert } from "./sections/transaction-revert/transaction-revert";
 
@@ -11,6 +12,7 @@ export function Transactions(){
                 <div className="flex justify-end flex-wrap gap-2">
                     <TransactionFilters/>
                     <TransactionsCreate/>
+                    <TransactionImportExport/>
                     <TransactionRevert/>
                 </div>
             </div>
