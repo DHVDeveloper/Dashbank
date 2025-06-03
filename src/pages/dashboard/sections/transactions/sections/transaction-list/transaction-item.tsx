@@ -53,7 +53,7 @@ export function TransactionItem({
           className={`text-2xl font-bold sm:text-xl ${
             transaction.transactionType === "deposit"
               ? "text-green-600"
-              : "text-red-600"
+              : "text-red-500"
           }`}
         >
           <span className="mr-1">
