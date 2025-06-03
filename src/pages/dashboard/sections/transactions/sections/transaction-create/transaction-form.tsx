@@ -132,8 +132,8 @@ export function TransactionForm({transaction,isLoading,transactionType,hasEnough
         <Input
           id="transaction-date"
           type="date"
-          min={transactionType === 'edit' ? getCurrentDateToForm(transaction?.date) : getCurrentDateToForm(new Date())}
-          value={transactionType === 'edit' ? date : getCurrentDateToForm(new Date())}
+          min={(transactionType === 'edit' && transaction && transaction.date < new Date()) ? getCurrentDateToForm(transaction?.date) : getCurrentDateToForm(new Date())}
+          value={date}
           onChange={(e) => handleDateChange(e.target.value)}
           required
         />
