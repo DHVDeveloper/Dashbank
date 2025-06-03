@@ -112,7 +112,7 @@ export function TransactionForm({transaction,isLoading,onSubmit}:TransactionForm
         <Input
           id="transaction-date"
           type="date"
-          min={getCurrentDateToForm(new Date())}
+          min={getCurrentDateToForm(transaction?.date) ?? getCurrentDateToForm(new Date())}
           value={date}
           onChange={(e) => handleDateChange(e.target.value)}
           required
