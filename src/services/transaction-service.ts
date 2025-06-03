@@ -1,8 +1,8 @@
 import type { NewTransaction, Transaction, TransactionFilters } from "@/domain/interfaces/transaction";
 import { mapTransactionListRequestToTransactionList } from "@/domain/mappers/transaction.mapper";
 import type { NewTransactionRequest, TransactionRequest } from "@/infraestructure/interfaces/transaction.external";
-import { mapNewtransactionToNewTransactionRequest, mapTransactionToTransactionRequest } from "@/infraestructure/mappers/transaction.external.mapper";
-import { createNewTransaction, editTransactionByTransaction, getTransactionHistoryData, removeTransactionById, revertLastCreatedTransaction } from "@/infraestructure/repository/transaction-repository";
+import { mapNewTransactionsListToNewTransactionRequestList, mapNewtransactionToNewTransactionRequest, mapTransactionToTransactionRequest } from "@/infraestructure/mappers/transaction.external.mapper";
+import { createNewTransaction, editTransactionByTransaction, getTransactionHistoryData, importTransactionsFromList, removeTransactionById, revertLastCreatedTransaction } from "@/infraestructure/repository/transaction-repository";
 import type { ApiResponse, PaginatedResponse } from "@/types/api-response";
 
 export const transactionService = {
@@ -10,7 +10,8 @@ export const transactionService = {
     newTransaction: newTransaction,
     removeTransaction: removeTransaction,
     editTransaction: editTransaction,
-    revertLastTransaction: revertLastTransaction
+    revertLastTransaction: revertLastTransaction,
+    importTransactions: importTransactions
 }
 
 async function newTransaction(transaction:NewTransaction): Promise<ApiResponse<NewTransactionRequest>> {
@@ -70,6 +71,20 @@ async function editTransaction(transaction:Transaction): Promise<ApiResponse<Pag
 
 async function revertLastTransaction(): Promise<ApiResponse<Transaction>> {
     const response = await revertLastCreatedTransaction()
+    if(!response.success) {
+        return({
+            success: false,
+            error: response.error
+        })
+    }
+    return {
+        success: response.success
+    }
+}
+
+async function importTransactions(transactions:NewTransaction[]): Promise<ApiResponse<PaginatedResponse<Transaction[]>>> {
+    const transactionRequest:NewTransactionRequest[] = mapNewTransactionsListToNewTransactionRequestList(transactions)
+    const response = await importTransactionsFromList(transactionRequest)
     if(!response.success) {
         return({
             success: false,
