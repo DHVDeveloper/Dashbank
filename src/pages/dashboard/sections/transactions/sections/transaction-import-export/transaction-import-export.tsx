@@ -26,7 +26,7 @@ export function TransactionImportExport() {
   } 
 
   return (
-    <div className="flex w-full gap-4 md:w-fit">
+    <div className="flex w-full gap-2 md:w-fit">
       <TransactionImportButton onImport={handleImportCsv}/>
       {!transactionsLoading && transactionList.length > 0 && (
         <TransactionExportButton transactions={transactionList}/>

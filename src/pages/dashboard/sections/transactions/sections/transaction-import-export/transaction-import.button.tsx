@@ -1,6 +1,7 @@
 import { useAlertContext } from '@/context/alert/alert.context'
 import type { NewTransaction } from '@/domain/interfaces/transaction'
 import { Button } from '@/ui/components/form/button'
+import { CvsIcon } from '@/ui/icons/csv.icon'
 import { convertCSVToTransactions, parseCSV } from '@/utils/csv'
 import React, { useCallback } from 'react'
 
@@ -46,8 +47,8 @@ export function TransactionImportButton({ onImport }: TransactionImportButtonPro
         onChange={handleFileUpload}
         className="hidden"
       />
-      <Button className='flex-1 text-nowrap md:flex-0' onClick={triggerFileInput}>
-        Import from CSV
+      <Button className='flex-1  flex items-center gap-1 text-nowrap md:flex-0' onClick={triggerFileInput}>
+        <CvsIcon/> Import
       </Button>
     </>
   )
