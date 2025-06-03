@@ -1,7 +1,6 @@
 import type { TransactionResponse } from "@/infraestructure/interfaces/transaction.external";
 import type { Transaction } from "../interfaces/transaction";
-import { CurrencyRepository } from "@/infraestructure/interfaces/money.external";
-import { Currency } from "../interfaces/money";
+import { mapCurrencyResponseToCurrency } from "./money.mapper";
 
 export function mapTransactionRequestToTransaction(transactionResponse:TransactionResponse): Transaction {
     return {
@@ -24,11 +23,3 @@ export function mapTransactionListRequestToTransactionList(transactionListRespon
 }
 
 
-export function mapCurrencyResponseToCurrency(currency: CurrencyRepository): Currency {
-  switch (currency) {
-    case CurrencyRepository.EUR:
-      return Currency.EUR
-    case CurrencyRepository.KES:
-      return Currency.KES
-  }
-}
