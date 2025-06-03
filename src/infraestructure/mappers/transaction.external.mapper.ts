@@ -28,7 +28,11 @@ export function mapTransactionToTransactionRequest(transaction:Transaction): Tra
         },
     }
 }
-
+export function mapNewTransactionsListToNewTransactionRequestList(transactionList:NewTransaction[]): NewTransactionRequest[] {
+    return(transactionList.length > 0 ? 
+    transactionList.map(transaction => mapNewtransactionToNewTransactionRequest(transaction)) 
+    : [])
+}
 export function mapCurrencyToCurrencyResponse(currency: Currency): CurrencyRepository {
   switch (currency) {
     case Currency.EUR:
