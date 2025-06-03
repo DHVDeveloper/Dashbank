@@ -1,6 +1,6 @@
-import type { Money } from "../../../domain/interfaces/money";
-import { formatMoney } from "../../../utils/formatMoney";
-import { ArrowUpRight } from "../../icons/arrow-up-right.icon";
+import type { Money } from "../../../../domain/interfaces/money";
+import { formatMoney } from "../../../../utils/formatMoney";
+import { ArrowUpRight } from "../../../icons/arrow-up-right.icon";
 
 interface MovementsCardProps {
   title: string;
@@ -27,7 +27,7 @@ export function MovementCard({
         />
         <div className="flex flex-col justify-center items-start">
           <p className="text-xs ">{title}</p>
-          <div className={`text-2xl font-semibold w-full text-end ${amountColor}`}>
+          <div className={`text-2xl font-semibold w-full text-start ${amountColor}`}>
             {formatMoney(money)}
           </div>
         </div>

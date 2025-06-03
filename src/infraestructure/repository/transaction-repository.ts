@@ -177,37 +177,37 @@ export function getTransactionsByFilters(
 export function revertLastCreatedTransaction(): Promise<ApiResponse<Transaction>> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const transactionListStorage = localStorage.getItem("transactions");
+      const transactionListStorage = localStorage.getItem("transactions")
       const transactionList: TransactionResponse[] = transactionListStorage
         ? JSON.parse(transactionListStorage)
-        : [];
+        : []
 
       if (transactionList.length === 0) {
         resolve({
           success: false,
           error: "There are no transactions to reverse"
-        });
-        return;
+        })
+        return
       }
 
       const sortedTransactions = [...transactionList].sort((a, b) => 
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+      )
 
-      const lastTransaction = sortedTransactions[0];
+      const lastTransaction = sortedTransactions[0]
 
       const transactionListEdited = transactionList.filter(
         transaction => transaction.id !== lastTransaction.id
-      );
+      )
 
       localStorage.setItem(
         "transactions",
         JSON.stringify(transactionListEdited)
-      );
+      )
 
       resolve({
         success: true
-      });
-    }, 200);
-  });
+      })
+    }, 200)
+  })
 }

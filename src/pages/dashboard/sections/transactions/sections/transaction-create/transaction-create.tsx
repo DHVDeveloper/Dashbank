@@ -5,10 +5,12 @@ import { Button } from "@/ui/components/form/button"
 import { Modal } from "@/ui/components/modal/modal"
 import { useState } from "react"
 import { TransactionForm } from "./transaction-form"
+import { useBalanceOverviewContext } from "@/context/balance-overview/balance-overview.context"
 
 export function TransactionsCreate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const {refreshBalance, hasEnoughBalance} = useBalanceOverviewContext()
   const { showAlert } = useAlertContext()
   const {newTransaction} = useTransactionsContext()
 
@@ -20,11 +22,14 @@ export function TransactionsCreate() {
       return
     }
     showAlert({type: 'success',message: 'The transaction has been made successfully.'})
+    refreshBalance()
+
     setIsModalOpen(false)
     setIsLoading(false)
   }
+
   return (
-    <div className="bg-red-500 flex-1 md:flex-0">
+    <div className="flex-1 md:flex-0">
       <div className="flex justify-end w-full items-center">
         <Button
           className="w-full"
@@ -40,7 +45,7 @@ export function TransactionsCreate() {
         onClose={() => setIsModalOpen(false)}
         title="New transaction"
       >
-        <TransactionForm onClose={() => setIsModalOpen(false)} isLoading={isLoading} onSubmit={handleCreateTransaction}/>
+        <TransactionForm transactionType="new" onClose={() => setIsModalOpen(false)} isLoading={isLoading} hasEnoughBalance={hasEnoughBalance} onSubmit={handleCreateTransaction}/>
       </Modal>
     </div>
   )

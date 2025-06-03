@@ -6,6 +6,7 @@ import { useAlertContext } from "@/context/alert/alert.context"
 import { Modal } from "@/ui/components/modal/modal"
 import { TransactionForm } from "../transaction-create/transaction-form"
 import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction"
+import { useBalanceOverviewContext } from "@/context/balance-overview/balance-overview.context"
 
 type ModalMode = "edit" | "reuse" | null
 
@@ -26,6 +27,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
   const [isModalLoading, setIsModalLoading] = useState(false)
   const [transactionModal, setTransactionModal] = useState<Transaction | null>(null)
   const [modalMode, setModalMode] = useState<ModalMode>(null)
+  const {refreshBalance, hasEnoughBalance} = useBalanceOverviewContext()
   const containerRef = useRef<HTMLDivElement>(null)
   const { showAlert } = useAlertContext()
 
@@ -76,6 +78,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
       return
     }
     refreshTransactions()
+    refreshBalance()
     showAlert({ type: "success", message: "Transaction deleted successfully." })
   }
 
@@ -94,7 +97,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
         })
         return
       }
-
+      refreshBalance()
       showAlert({ type: "success", message: "The transaction has been edited successfully." })
     }
 
@@ -107,6 +110,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
         })
         return
       }
+      refreshBalance()
       showAlert({ type: "success", message: "The transaction has been created successfully." })
     }
     closeModal()
@@ -137,9 +141,11 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
         title={modalMode === "edit" ? "Edit Transaction" : "Reuse Transaction"}
       >
         <TransactionForm
+          transactionType={modalMode === "edit" ? 'edit' : 'new'}
           transaction={transactionModal ?? undefined}
           isLoading={isModalLoading}
           onSubmit={handleSubmit}
+          hasEnoughBalance={hasEnoughBalance}
           onClose={closeModal}
         />
       </Modal>

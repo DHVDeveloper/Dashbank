@@ -3,11 +3,11 @@ import { Wallet } from "@/ui/icons/wallet.icon";
 import { formatMoney } from "@/utils/formatMoney";
 
 
-interface OverviewBalanceProps {
-  balance: Money;
+interface TotalBalanceProps {
+  balance: Money
 }
 
-export function OverviewBalance({ balance }: OverviewBalanceProps) {
+export function TotalBalance({ balance }: TotalBalanceProps) {
   return (
     <div className="relative overflow-hidden rounded-3xl flex-1 bg-gradient-to-br from-black to-gray-800 p-8 text-white">
       <div className="absolute inset-0 bg-black/1"></div>
