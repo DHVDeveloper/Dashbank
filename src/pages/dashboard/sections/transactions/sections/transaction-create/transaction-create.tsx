@@ -10,22 +10,29 @@ import { useBalanceOverviewContext } from "@/context/balance-overview/balance-ov
 export function TransactionsCreate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const {refreshBalance, hasEnoughBalance} = useBalanceOverviewContext()
+  const { refreshBalance, hasEnoughBalance } = useBalanceOverviewContext()
   const { showAlert } = useAlertContext()
-  const {newTransaction} = useTransactionsContext()
-
-  const handleCreateTransaction = async (transaction:NewTransaction) => {
+  const { newTransaction } = useTransactionsContext()
+  const handleCreateTransaction = async (transaction: NewTransaction) => {
     setIsLoading(true)
-    const response = await newTransaction(transaction)
-    if(!response.success) {
-      showAlert({type: 'danger',message:response.errorMessage ?? 'Failed to create the transaction.'})
-      return
+    try {
+      const response = await newTransaction(transaction)
+      if (!response.success) {
+        showAlert({
+          type: "danger",
+          message: response.errorMessage ?? "Failed to create the transaction.",
+        })
+        return
+      }
+      showAlert({
+        type: "success",
+        message: "The transaction has been made successfully.",
+      })
+      refreshBalance()
+      setIsModalOpen(false)
+    } finally {
+      setIsLoading(false)
     }
-    showAlert({type: 'success',message: 'The transaction has been made successfully.'})
-    refreshBalance()
-
-    setIsModalOpen(false)
-    setIsLoading(false)
   }
 
   return (
@@ -45,7 +52,13 @@ export function TransactionsCreate() {
         onClose={() => setIsModalOpen(false)}
         title="New transaction"
       >
-        <TransactionForm transactionType="new" onClose={() => setIsModalOpen(false)} isLoading={isLoading} hasEnoughBalance={hasEnoughBalance} onSubmit={handleCreateTransaction}/>
+        <TransactionForm
+          transactionType="new"
+          onClose={() => setIsModalOpen(false)}
+          isLoading={isLoading}
+          hasEnoughBalance={hasEnoughBalance}
+          onSubmit={handleCreateTransaction}
+        />
       </Modal>
     </div>
   )
