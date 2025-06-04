@@ -93,25 +93,22 @@ function ActionButtons({
   return (
     <div className="flex items-center gap-1">
       <Button
-        aria-label="edit"
-        className="bg-transparent p-1! hover:bg-primary-bg-color"
+        className="group bg-transparent p-1! hover:bg-primary-bg-color"
         onClick={() => handleEditTransaction(transaction.id)}
       >
-        <EditIcon className="h-4 w-4 text-black dark:text-white" />
+        <EditIcon className="h-4 w-4 transition-colors text-black dark:text-white group-hover:text-white" />
       </Button>
       <Button
-        aria-label="reuse"
-        className="bg-transparent p-1! hover:bg-primary-bg-color"
+        className="group bg-transparent p-1! hover:bg-primary-bg-color"
         onClick={() => handleReuseTransaction(transaction.id)}
       >
-        <ReuseIcon className="h-4 w-4 text-black dark:text-white" />
+        <ReuseIcon className="h-4 w-4 transition-colors text-black dark:text-white group-hover:text-white" />
       </Button>
       <Button
-        aria-label="remove"
-        className="bg-transparent p-1! hover:bg-primary-bg-color"
+        className="group bg-transparent p-1! hover:bg-primary-bg-color"
         onClick={() => handleRemoveTransaction(transaction.id)}
       >
-        <TrashIcon className="h-4 w-4 text-black dark:text-white" />
+        <TrashIcon className="h-4 w-4 transition-colors text-black dark:text-white group-hover:text-white" />
       </Button>
     </div>
   )
