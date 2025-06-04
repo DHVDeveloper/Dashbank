@@ -8,12 +8,12 @@ Designed for an intuitive user experience, it includes integrated alerts and vis
 
 ## 🚀 Tech Stack
 
-- ⚡ **Vite** – blazing fast dev environment  
-- ⚛️ **React** – UI library  
-- 🟦 **TypeScript** – static type checking  
-- 🌬️ **Tailwind CSS** – utility-first CSS framework  
-- 🧪 **Vitest** – fast test runner  
-- 🔍 **React Testing Library** – test utilities for React components  
+- ⚡ **Vite**  
+- ⚛️ **React** 
+- 🟦 **TypeScript**
+- 🌬️ **Tailwind CSS**
+- 🧪 **Vitest**
+- 🔍 **React Testing Library**  
 
 ---
 
@@ -50,9 +50,13 @@ To refine results, users can apply filters by:
 All interactions with **LocalStorage** are handled through **simulated asynchronous requests**, replicating the behavior of real API calls.  
 This design decision makes it easier to scale the application in the future — enabling a smooth migration to a backend API or external data service without refactoring the core logic.
 - The **UI is designed with scalability in mind**, featuring **skeleton loaders** and **spinners** to handle asynchronous states smoothly and provide visual feedback during data loading operations.
-### 🌗 Theme
 
-- Toggle between light and dark mode  
+## 🔔 Action Feedback & Alerts  
+To enhance usability, the application includes **alert messages and toast notifications** that guide the user through every interaction.  
+Whether it's confirming a successful action or reporting an error, the app ensures that users receive clear and immediate feedback at all times.
+
+## 🌗 Theme
+Toggle between light and dark mode  
 
 ---
 
