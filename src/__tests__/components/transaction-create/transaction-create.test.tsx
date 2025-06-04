@@ -26,12 +26,12 @@ vi.mock("@/context/balance-overview/balance-overview.context", () => ({
 }))
 
 describe('TransactionsCreate', () => {
-  it('renders the new transaction button', () => {
+  it('should renders the new transaction button', () => {
     render(<TransactionsCreate />)
     expect(screen.getByRole('button', { name: '+ New Transaction' })).toBeInTheDocument()
   })
 
-  it('opens modal when button is clicked', async () => {
+  it('should opens modal when button is clicked', async () => {
     render(<TransactionsCreate />)
     
     await userEvent.click(screen.getByText('+ New Transaction'))
