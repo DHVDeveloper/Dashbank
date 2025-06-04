@@ -70,10 +70,10 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
 
   const handleRemoveTransaction = async (transactionId: string) => {
     const response = await removeTransaction(transactionId)
-    if (!response.success) {
+    if (!response?.success) {
       showAlert({
         type: "danger",
-        message: response.errorMessage ?? "Failed to delete the transaction.",
+        message: response?.errorMessage ?? "Failed to delete the transaction.",
       })
       return
     }
