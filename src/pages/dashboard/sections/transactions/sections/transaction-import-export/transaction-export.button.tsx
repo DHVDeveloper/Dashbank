@@ -1,3 +1,4 @@
+import { useAlertContext } from '@/context/alert/alert.context'
 import type { Transaction } from '@/domain/interfaces/transaction'
 import { Button } from '@/ui/components/form/button'
 import { CvsIcon } from '@/ui/icons/csv.icon'
@@ -9,14 +10,15 @@ interface TransactionExportButtonProps {
 }
 
 export function TransactionExportButton({ transactions}: TransactionExportButtonProps) {
+  const {showAlert} = useAlertContext()
   const handleExport = useCallback(() => {
     if (transactions.length === 0) return
 
     try {
       const csvString = convertTransactionsToCSV(transactions)
       downloadCSV(csvString, 'transactions.csv')
-    } catch (error) {
-      alert('Error generating CSV file.')
+    }  catch {
+      showAlert({type:'danger', message: 'Error exporting in CSV file.'})
     }
   }, [transactions])
 
