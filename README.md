@@ -49,7 +49,7 @@ To refine results, users can apply filters by:
 ## 🚀 Scalable Architecture  
 All interactions with **LocalStorage** are handled through **simulated asynchronous requests**, replicating the behavior of real API calls.  
 This design decision makes it easier to scale the application in the future — enabling a smooth migration to a backend API or external data service without refactoring the core logic.
-
+- The **UI is designed with scalability in mind**, featuring **skeleton loaders** and **spinners** to handle asynchronous states smoothly and provide visual feedback during data loading operations.
 ### 🌗 Theme
 
 - Toggle between light and dark mode  
