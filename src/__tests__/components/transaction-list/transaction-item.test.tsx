@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import type { Transaction } from "../../domain/interfaces/transaction"
-import { TransactionItem } from "../../pages/dashboard/sections/transactions/sections/transaction-list/transaction-item"
+import type { Transaction } from "../../../domain/interfaces/transaction"
+import { TransactionItem } from "../../../pages/dashboard/sections/transactions/sections/transaction-list/transaction-item"
 
 const mockEdit = vi.fn()
 const mockRemove = vi.fn()
