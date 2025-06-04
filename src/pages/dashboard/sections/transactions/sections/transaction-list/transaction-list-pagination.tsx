@@ -22,15 +22,15 @@ export function TransactionListPagination({
       <div className="flex items-center gap-2 justify-end">
         {paginationInfo.page > 1 && (
           <Button disabled={isLoading} onClick={() => onPageChange(paginationInfo.page - 1)}>
-            <ChevronIcon className="rotate-90"/>
+            <ChevronIcon aria-label="previous" className="rotate-90"/>
           </Button>
         )}
         <span className="select-none">{paginationInfo.page}</span>
-        <Button 
+        <Button
           onClick={() => onPageChange(paginationInfo.page + 1)} 
           disabled={paginationInfo.totalPages <= paginationInfo.page ||  isLoading}
         >
-          <ChevronIcon className="-rotate-90"/>
+          <ChevronIcon aria-label="next" className="-rotate-90"/>
         </Button>
       </div>
     </div>
