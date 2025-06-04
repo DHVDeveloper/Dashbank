@@ -5,7 +5,7 @@ import { vi } from "vitest"
 describe("TransactionListPagination", () => {
   const mockOnPageChange = vi.fn()
 
-  afterEach(() => {
+  beforeEach(() => {
     vi.clearAllMocks()
   })
 
