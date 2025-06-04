@@ -33,7 +33,7 @@ export function Modal({ isOpen, onClose, onClosed, title, children }: ModalProps
   if (!visible) return null
 
   return (
-    <div className="fixed text-primary-text-color inset-0 z-50 overflow-y-auto">
+    <div role="dialog" className="fixed text-primary-text-color inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
         <div 
           className={`fixed inset-0 bg-[#00000080] bg-opacity-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
