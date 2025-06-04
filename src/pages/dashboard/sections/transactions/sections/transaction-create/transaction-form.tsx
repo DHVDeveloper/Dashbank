@@ -140,7 +140,7 @@ export function TransactionForm({transaction,isLoading,transactionType,hasEnough
       </div>
 
       <div className="pt-4 text-end">
-        <Button disabled={isLoading} type="submit" className="w-full">
+        <Button aria-label="save" disabled={isLoading} type="submit" className="w-full">
           Save Transaction
         </Button>
       </div>
