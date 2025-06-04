@@ -7,6 +7,7 @@ import { Modal } from "@/ui/components/modal/modal"
 import { TransactionForm } from "../transaction-create/transaction-form"
 import type { NewTransaction, Transaction } from "@/domain/interfaces/transaction"
 import { useBalanceOverviewContext } from "@/context/balance-overview/balance-overview.context"
+import { TransactionItemNoContent } from "./transaction-item-no-content"
 
 type ModalMode = "edit" | "reuse" | null
 
@@ -123,7 +124,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
           ? Array.from({ length: 4 }).map((_, index) => (
               <TransactionItemSkeleton key={index} />
             ))
-          : transactionList.length > 0 &&
+          : transactionList.length > 0 ?
             transactionList.map((transaction) => (
               <TransactionItem
                 key={transaction.id}
@@ -132,7 +133,7 @@ export function TransactionsList({ transactionList, transactionsLoading}: Transa
                 handleRemoveTransaction={handleRemoveTransaction}
                 handleReuseTransaction={handleReuseTransaction}
               />
-            ))}
+            )): <TransactionItemNoContent/>}
       </div>
       <Modal
         isOpen={isModalOpen}
